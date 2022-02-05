@@ -1,3 +1,6 @@
+startdb:
+	docker start postgres14.1
+
 createdb:
 	docker exec -it postgres14.1 createdb --username=root --owner=root simple_bank
 
@@ -13,5 +16,10 @@ migrate/up:
 migrate/down:
 	migrate -path db/migrations -database "postgres://root:secret@localhost:5432/simple_bank?sslmode=disable" -verbose  down
 
+sqlc/gen:
+	sqlc generate
 
-.PHONY: createdb dropdb postgres migrate/up migrate/down
+sqlc/check:
+	sqlc check
+
+.PHONY: createdb dropdb postgres migrate/up migrate/down startdb sqlc/generate sqlc/check
